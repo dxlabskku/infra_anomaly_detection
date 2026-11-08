@@ -1,0 +1,174 @@
+<annotation verified="yes">
+	<folder>대칭형</folder>
+	<filename>S187_B21_g0.25_x(1506-1762).jpg</filename>
+	<localpath>\라벨링데이터\B scan\공동\대칭형\S187_B21_g0.25_x(1506-1762).jpg</localpath>
+	<size>
+		<width>256</width>
+		<height>256</height>
+		<depth>1</depth>
+	</size>
+	<segmented>0</segmented>
+	<gainvalue>0.25</gainvalue>
+	<equipment>MA</equipment>
+	<channels>25</channels>
+	<scanclass>B</scanclass>
+	<channellayer>21</channellayer>
+	<season>winter</season>
+	<address>SM</address>
+	<temphum>-3.8,41.3</temphum>
+	<rainfall>1.2,0,0</rainfall>
+	<permittivity>6.0</permittivity>
+	<roadtype>Asphalt</roadtype>
+	<object>
+		<name>cavity</name>
+		<cavityclass>A</cavityclass>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>115.264</xmin>
+			<ymin>45.668</ymin>
+			<xmax>139.788</xmax>
+			<ymax>71.764</ymax>
+		</bndbox>
+		<cavity_size>
+			<w>1.2</w>
+			<l>1.3</l>
+			<h>0.25</h>
+		</cavity_size>
+	</object>
+	<metadata_v2 schema_version="2.0" data_source="legacy_xml_and_filename">
+		<record_id origin="generated_stable_sorted_index">GPR_002414</record_id>
+		<equipment_code origin="equipment">MA</equipment_code>
+		<line_id origin="filename">N00</line_id>
+		<scan_type origin="scanclass">B</scan_type>
+		<scan_no origin="filename">B21</scan_no>
+		<channel_no origin="filename" applicable_to="B_scan">21</channel_no>
+		<scan_depth origin="filename" unit="unverified" applicable_to="C_scan"/>
+		<gain origin="gainvalue">0.25</gain>
+		<segment_range origin="filename" unit="not_verified">x(1506-1762)</segment_range>
+		<surface_pick status="not_present_in_source_xml" unit="not_available"/>
+		<permittivity origin="permittivity">6.0</permittivity>
+		<temperature_c origin="temphum">-3.8</temperature_c>
+		<relative_humidity_pct origin="temphum">41.3</relative_humidity_pct>
+		<rainfall_3d origin="rainfall" format="daily_3_values">1.2,0,0</rainfall_3d>
+		<object_code origin="object/name">c</object_code>
+		<cavity_shape origin="object/cavityclass">A</cavity_shape>
+		<marking_x origin="bbox_center_calculated" unit="px">127.526</marking_x>
+		<marking_y origin="bbox_center_calculated" unit="px">58.716</marking_y>
+		<marking_code origin="bbox_center_calculated" not_original_point="true">cA(127.526,58.716)</marking_code>
+		<facility_type origin="inferred_from_roadtype" validation="not_field_verified">road</facility_type>
+		<modality origin="source_data_type">GPR</modality>
+		<damage_type origin="object/name" verification="object_annotation">cavity</damage_type>
+	</metadata_v2>
+	<kma_weather source="KMA APIHub ASOS 108 hourly (kma_sfctm2)">
+		<asos_stn>108</asos_stn>
+		<asos_ta>-2.0</asos_ta>
+		<asos_td>-17.3</asos_td>
+		<asos_hm>30.0</asos_hm>
+		<asos_ws>1.4</asos_ws>
+		<asos_wd>27.0</asos_wd>
+		<asos_pa>1013.8</asos_pa>
+		<asos_ts_surface>0.9</asos_ts_surface>
+		<asos_te_5cm>0.3</asos_te_5cm>
+		<asos_te_10cm>1.8</asos_te_10cm>
+		<asos_te_20cm>3.5</asos_te_20cm>
+		<asos_te_30cm>4.6</asos_te_30cm>
+		<asos_snow_depth>0.0</asos_snow_depth>
+		<asos_rn_1h>0.0</asos_rn_1h>
+		<asos_rn_24h>0.0</asos_rn_24h>
+		<asos_ta_min_24h>-7.0</asos_ta_min_24h>
+		<asos_ta_max_24h>4.4</asos_ta_max_24h>
+		<asos_ta_mean_24h>-2.096</asos_ta_mean_24h>
+		<asos_ss_24h>8.3</asos_ss_24h>
+		<asos_si_24h>6.46</asos_si_24h>
+		<asos_rn_3d>1.3</asos_rn_3d>
+		<asos_rn_7d>5.4</asos_rn_7d>
+		<asos_rn_max1h_7d>2.5</asos_rn_max1h_7d>
+		<asos_rn_14d>29.9</asos_rn_14d>
+		<asos_rn_30d>43.6</asos_rn_30d>
+		<asos_rn_max1h_30d>8.5</asos_rn_max1h_30d>
+		<asos_hours_since_rain>40.0</asos_hours_since_rain>
+		<asos_freeze_thaw_days_30d>19</asos_freeze_thaw_days_30d>
+		<asos_frost_days_30d>20</asos_frost_days_30d>
+	</kma_weather>
+	<kma_rain_snow source="KMA APIHub AWS/ASOS daily (sfc_aws_day) + minutely (nph-aws2_min), nearest station to survey site">
+		<location>
+			<gu_from_coord>마포구</gu_from_coord>
+			<site_id>L185</site_id>
+		</location>
+		<station>
+			<stn_id>108</stn_id>
+			<stn_orig_id>419</stn_orig_id>
+			<stn_replaced>1</stn_replaced>
+			<stn_high_missing>0</stn_high_missing>
+			<stn_missing_rate_5y>0.0005</stn_missing_rate_5y>
+		</station>
+		<rain_history>
+			<rn_cum_7d>4.5</rn_cum_7d>
+			<rn_cum_30d>41.5</rn_cum_30d>
+			<rn_cum_90d>103.0</rn_cum_90d>
+			<rn_cum_1y>1250.5</rn_cum_1y>
+			<rn_cum_3y>2975.7</rn_cum_3y>
+			<rn_cum_5y>5179.2</rn_cum_5y>
+			<rn_cum_last_wet_season>1019.5</rn_cum_last_wet_season>
+			<rn_cum_current_wet_season>0.0</rn_cum_current_wet_season>
+			<heavy_days_50mm_1y>6</heavy_days_50mm_1y>
+			<heavy_days_80mm_1y>5</heavy_days_80mm_1y>
+			<max_daily_rn_1y>144.5</max_daily_rn_1y>
+			<max_hourly_rn_clock_1y>50.5</max_hourly_rn_clock_1y>
+			<hours_ge30mm_1y>5</hours_ge30mm_1y>
+			<heavy_days_50mm_3y>10</heavy_days_50mm_3y>
+			<heavy_days_80mm_3y>8</heavy_days_80mm_3y>
+			<max_daily_rn_3y>144.5</max_daily_rn_3y>
+			<max_hourly_rn_clock_3y>50.5</max_hourly_rn_clock_3y>
+			<hours_ge30mm_3y>7</hours_ge30mm_3y>
+			<heavy_days_50mm_5y>21</heavy_days_50mm_5y>
+			<heavy_days_80mm_5y>10</heavy_days_80mm_5y>
+			<max_daily_rn_5y>165.0</max_daily_rn_5y>
+			<max_hourly_rn_clock_5y>50.5</max_hourly_rn_clock_5y>
+			<hours_ge30mm_5y>12</hours_ge30mm_5y>
+			<days_since_last_rain>5</days_since_last_rain>
+			<days_since_last_rain_capped>0</days_since_last_rain_capped>
+		</rain_history>
+		<freeze_thaw>
+			<ft_days_last_winter>62</ft_days_last_winter>
+			<ft_days_current_winter>5</ft_days_current_winter>
+			<ft_days_1y>84</ft_days_1y>
+			<ft_days_3y>245</ft_days_3y>
+			<ft_days_5y>384</ft_days_5y>
+			<tmin_last_winter>-12.6</tmin_last_winter>
+		</freeze_thaw>
+		<snow>
+			<snow_source>matched_station</snow_source>
+			<snow_stn_id>108</snow_stn_id>
+			<snow_depth_max_last_winter>6.6</snow_depth_max_last_winter>
+			<snow_new_sum_last_winter>15.1</snow_new_sum_last_winter>
+			<snow_days_last_winter>8</snow_days_last_winter>
+			<snow_new_sum_current_winter>1.1</snow_new_sum_current_winter>
+			<snow_new_sum_5y>117.6</snow_new_sum_5y>
+			<snow_days_5y>58</snow_days_5y>
+		</snow>
+		<missing_days>
+			<missing_days_7d>0</missing_days_7d>
+			<missing_days_30d>0</missing_days_30d>
+			<missing_days_90d>0</missing_days_90d>
+			<missing_days_1y>0</missing_days_1y>
+			<missing_days_3y>1</missing_days_3y>
+			<missing_days_5y>1</missing_days_5y>
+			<missing_days_last_wet_season>0</missing_days_last_wet_season>
+			<missing_days_current_wet_season>0</missing_days_current_wet_season>
+			<missing_hourly_days_1y>0</missing_hourly_days_1y>
+			<missing_hourly_days_3y>1</missing_hourly_days_3y>
+			<missing_hourly_days_5y>2</missing_hourly_days_5y>
+			<missing_days_ta_last_winter>0</missing_days_ta_last_winter>
+			<missing_days_ta_current_winter>0</missing_days_ta_current_winter>
+			<missing_days_ta_1y>0</missing_days_ta_1y>
+			<missing_days_ta_3y>0</missing_days_ta_3y>
+			<missing_days_ta_5y>0</missing_days_ta_5y>
+			<missing_days_snow_last_winter>0</missing_days_snow_last_winter>
+			<missing_days_snow_current_winter>0</missing_days_snow_current_winter>
+			<missing_days_snow_5y>0</missing_days_snow_5y>
+		</missing_days>
+	</kma_rain_snow>
+</annotation>
