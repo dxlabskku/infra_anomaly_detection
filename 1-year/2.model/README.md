@@ -219,3 +219,27 @@ python -m pytest -q tests
 - 데이터: AI-Hub 「도로·지상 시설물 안전 관리를 위한 GPR 데이터」(076), 과학기술정보통신부·한국지능정보사회진흥원(NIA)
 - 검출기: [Ultralytics YOLOv8](https://github.com/ultralytics/ultralytics) (AGPL-3.0)
 - 라이선스: **AGPL-3.0** ([`LICENSE`](LICENSE)). 이 코드와 학습된 가중치(`weights/best.pt`)는 AGPL-3.0 라이선스인 Ultralytics YOLOv8을 기반으로 상황 인코더·FiLM 층 등을 추가해 수정한 것으로, 같은 라이선스를 따릅니다.
+
+## 9. 인용 및 사사
+
+이 모델이나 코드를 사용했다면 아래와 같이 인용해 주세요.
+
+```bibtex
+@misc{dxlab2026gprmodel,
+  title        = {Multimodal GPR Anomaly Detection Model with Weather and Location Context (Year 1)},
+  author       = {{Data eXperience Laboratory, Sungkyunkwan University}},
+  year         = {2026},
+  howpublished = {\url{https://github.com/dxlabskku/infra_anomaly_detection/tree/main/1-year/2.model}},
+  note         = {Supported by KAIA grant funded by the Ministry of Land, Infrastructure and Transport (RS-2026-25523576)}
+}
+```
+
+본 연구는 국토교통부/국토교통과학기술진흥원의 지원(협력거점형 국토교통 국제협력 연구개발사업, 과제번호 RS-2026-25523576)으로 수행되었습니다.
+
+This study was supported by the Korea Agency for Infrastructure Technology Advancement (KAIA) grant funded by the Ministry of Land, Infrastructure, and Transport (RS-2026-25523576).
+
+> 이 연구개발내용을 대외적으로 발표할 때에는 반드시 국토교통부(국토교통과학기술진흥원)에서 시행한 국토교통과학기술 연구개발사업의 결과임을 밝혀야 한다.
+
+## 10. 문의
+
+질문이나 오류 제보는 저장소 [Issues](https://github.com/dxlabskku/infra_anomaly_detection/issues)에 남겨 주세요. (성균관대학교 Data eXperience Laboratory)

@@ -188,5 +188,27 @@ split = {
 - GPR 이미지·라벨: ㈜셀파이엔씨
 - 기상 자료: 기상청 API허브 (ASOS 시간자료, AWS/ASOS 일·분 자료)
 
-본 데이터셋은 2026년 국토교통 국제협력 연구개발사업(선도기술탐색형)의 지원을 받아 구축되었습니다.
+## 9. 인용 및 사사
+
+이 데이터셋을 사용했다면 아래와 같이 인용해 주세요.
+
+```bibtex
+@misc{dxlab2026gprcavity,
+  title        = {GPR Subsurface Cavity B-scan Dataset with Weather Context (Year 1, De-identified)},
+  author       = {{Data eXperience Laboratory, Sungkyunkwan University} and {SHERPA ENC Co., Ltd.}},
+  year         = {2026},
+  howpublished = {\url{https://github.com/dxlabskku/infra_anomaly_detection/tree/main/1-year/1.dataset}},
+  note         = {Supported by KAIA grant funded by the Ministry of Land, Infrastructure and Transport (RS-2026-25523576)}
+}
+```
+
+본 데이터셋은 국토교통부/국토교통과학기술진흥원의 지원(협력거점형 국토교통 국제협력 연구개발사업, 과제번호 RS-2026-25523576)으로 구축되었습니다.
+
+This dataset was supported by the Korea Agency for Infrastructure Technology Advancement (KAIA) grant funded by the Ministry of Land, Infrastructure, and Transport (RS-2026-25523576).
+
+> 이 연구개발내용을 대외적으로 발표할 때에는 반드시 국토교통부(국토교통과학기술진흥원)에서 시행한 국토교통과학기술 연구개발사업의 결과임을 밝혀야 한다.
+
+## 10. 문의
+
+질문이나 오류 제보는 저장소 [Issues](https://github.com/dxlabskku/infra_anomaly_detection/issues)에 남겨 주세요. (성균관대학교 Data eXperience Laboratory · ㈜셀파이엔씨)
 
