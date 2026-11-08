@@ -5,7 +5,6 @@
 GPR B-scan 영상에 탐사 당시 **기상**과 **위치** 정보를 함께 넣어, 콘크리트 구조물(건축·교량·옹벽·터널)의 결함(결함 철근, 균열)을 검출하고 이미지 한 장을 **정상 / 불량**으로 판정하는 모델입니다.
 
 - 학습·평가 데이터: AI-Hub **「도로·지상 시설물 안전 관리를 위한 GPR 데이터」(076)** 중 20,000장
-- 같은 저장소의 [`../1.dataset`](../1.dataset)(GPR 공동 데이터셋)과는 다른 데이터입니다.
 
 ---
 
@@ -124,7 +123,7 @@ AI-Hub 「도로·지상 시설물 안전 관리를 위한 GPR 데이터」(076)
 - test는 시드 10으로 추출했고, train·val과 겹치는 이미지는 0장입니다.
 - 교량은 원본에 균열 영상이 거의 없어(3장) 결함 철근 위주로 구성됩니다.
 
-### 5.4 코드가 기대하는 폴더
+### 5.4 데이터셋 폴더 구성 
 
 내려받은 원본에서 위 구성대로 이미지와 라벨을 아래처럼 두면 됩니다. 20,000장의 파일 이름과 분할, 기상·위치 정보는 [`data_split/manifest.csv`](data_split/manifest.csv)에 있습니다.
 
@@ -143,7 +142,7 @@ cd code
 export CUDA_VISIBLE_DEVICES=0   # 쓸 GPU 번호
 ```
 
-### 6.1 제공된 가중치로 평가하기
+### 6.1 Pre-trained 가중치로 평가하기
 
 학습된 가중치 [`weights/best.pt`](weights/best.pt)로 val·test를 예측하고 지표를 계산합니다. (H200 기준 약 20분)
 
@@ -163,7 +162,7 @@ python s4_evaluate.py --exp GCL --test     # τ 결정, 지표 계산 → ../wor
 
 ```bash
 python s1_prepare.py
-python s2_train.py --exp GCL               # 약 5시간, 결과는 ../work/detectors/GCL/
+python s2_train.py --exp GCL              
 python s3_predict.py --exp GCL
 python s4_evaluate.py --exp GCL --test
 ```
@@ -186,11 +185,6 @@ bash run_smoke.sh
 python -m pytest -q tests
 ```
 
-### 참고
-
-- 이미 만든 결과를 다시 만들려면 각 명령에 `--overwrite`를 붙입니다. 붙이지 않으면 기존 결과를 덮어쓰지 않고 멈춥니다.
-- 설정을 명령줄에서 바꿀 수 있습니다: `--set care.modal_dropout=0.5`, `--epochs 1 --batch 8` 등.
-- `best.pt`는 `code/care_model.py`의 클래스를 담고 있어, 파이썬에서 직접 불러올 때는 `code/` 폴더가 import 경로에 있어야 합니다.
 
 ## 7. 폴더 구조
 
