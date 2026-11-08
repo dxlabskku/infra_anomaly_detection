@@ -1,0 +1,50 @@
+{
+  "train": [
+    "bridge_011",
+    "bridge_013",
+    "bridge_022",
+    "bridge_031",
+    "bridge_042",
+    "bridge_045",
+    "building_021",
+    "building_031",
+    "building_032",
+    "building_033",
+    "building_041",
+    "building_042",
+    "building_043",
+    "building_044",
+    "tennel_011",
+    "tennel_023",
+    "tennel_044",
+    "tennel_051",
+    "wall_022",
+    "wall_023",
+    "wall_031",
+    "wall_033",
+    "wall_041",
+    "wall_043",
+    "wall_044",
+    "wall_051"
+  ],
+  "val": [
+    "bridge_021",
+    "bridge_051",
+    "building_013",
+    "building_023",
+    "tennel_013",
+    "tennel_022",
+    "wall_011",
+    "wall_013"
+  ],
+  "test": [
+    "bridge_033",
+    "bridge_044",
+    "building_011",
+    "building_051",
+    "tennel_031",
+    "tennel_032",
+    "wall_021",
+    "wall_032"
+  ]
+}

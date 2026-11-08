@@ -1,0 +1,10 @@
+# 학습·평가에 사용한 버전 (Python 3.11.9, CUDA 12.8 빌드)
+torch==2.11.0
+ultralytics==8.4.166
+numpy==2.4.6
+scikit-learn==1.9.1
+opencv-python==4.14.0.*
+pandas
+PyYAML
+pycocotools
+pytest

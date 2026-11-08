@@ -1,0 +1,152 @@
+# 멀티모달 GPR 이상 탐지 모델 설정
+#   GPR(주) + 기후 + 위치 세 모달을 YOLOv8s 하나에 넣는다. 기후·위치는 YOLO 백본·넥 특징을 FiLM 으로 보정하고,
+#   이미지 판정은 rebar(c)·crack 최고 점수 >= tau (학습 없는 규칙, tau 는 val F1 최대 = 0.62).
+#   확정 모델: GCL (phys3 입력 + 기후·위치 FiLM + 현장 균형 표집), ../weights/best.pt
+#   데이터: ../data (구조물 단위 분할, train 14,000 / val 3,000 / test 3,000, test 는 시드 10 재추출)
+# 모든 경로와 하이퍼파라미터는 여기서만 정한다.
+#
+# 명령줄 덮어쓰기
+#   --set 키.경로=값          예) --set care.modal_dropout=0.5
+#   스크립트별 단축 인자       예) s2 --exp GCL --epochs 1 --batch 8
+#   --smoke                    아래 smoke.overrides 를 적용한다 (출력은 smoke/)
+
+# 상대 경로는 이 파일(code/) 기준이다
+paths:
+  aihub_root: "../data"                        # AI-Hub 076 원본 위치 (코드에서 직접 읽지 않음, 기록용)
+  subset_dir: "../data"                        # images/{split}/*.png, labels/{split}/*.json
+  manifest: "../data_split/manifest.csv"
+  work_dir: "../work"                          # 모든 출력 (prepared, detectors, preds, eval, logs)
+
+seed: 2026
+
+data:
+  splits: [train, val, test]
+  expected_split_counts: {train: 14000, val: 3000, test: 3000}   # build_struct20k.py (시설마다 3,500 / 750 / 750)
+  image_size: 512
+  facilities: [건축, 교량, 옹벽, 터널]
+  facility_en: {건축: building, 교량: bridge, 옹벽: retaining_wall, 터널: tunnel}
+  class_names: {0: rebar, 1: rebar_abnormal, 2: crack}   # JSON class 0/1/2
+  kinds: [good, real_c1, crack, partial_c1]               # 평가 분석용 꼬리표 (학습 입력 아님)
+
+# S1 입력 준비
+prepare:
+  modes: [phys3]          # 확정 모델 GCL 은 phys3 입력
+  detector_val_source: null        # best.pt 선택용 val: val 전체 3,000장
+  min_box_size: 2           # 자른 뒤 폭이나 높이가 2px 미만이면 학습 라벨에서 버림
+  workers: 16
+  png_compression: 1        # cv2 PNG 압축 수준 (무손실, 속도 위주)
+
+# phys3 입력 채널 (s1_prepare.py 머리말 참고)
+phys:
+  ref_percentile: 99.9               # 상대 진폭 기준 = 이미지 |s| 의 99.9번째 백분위 (99 는 철근 박스의 30~67% 가 잘림)
+  gain_clip: [0.25, 4.0]             # 깊이 보정 배율 범위 (깊은 곳 잡음이 지나치게 커지지 않게)
+  fit_max_images_per_equipment: 3000 # 장비별 깊이 감쇠를 맞출 train 이미지 수 (정상 철근 박스)
+
+climate:
+  columns: [temperature, humidity, rain_d0, rain_d1, rain_d2]
+  api_weights: [1.0, 0.5, 0.25]   # API = r0 + 0.5 r1 + 0.25 r2
+  feature_names: [T, H, log1p_r0, log1p_r1, log1p_r2, log1p_API]
+
+# 위치: 범주 3개. 어휘는 고정 목록이고 인덱스 0 은 결측(값 없음 또는 목록 밖 값)이다.
+location:
+  columns: [region, facility, part]
+  vocab:
+    region: [서울, 인천, 경기, 대전, 충북, 충남, 광주, 전북, 전남, 부산, 대구, 울산, 경북, 경남, 강원, 제주]
+    facility: [건축, 교량, 옹벽, 터널]
+    part: [벽체, 기둥, 바닥면, 벽면]
+
+context:
+  unseen_to_missing: true   # train 에 없던 위치 값(예: test 에만 있는 지역)은 학습된 임베딩이 없으므로 결측(0)으로
+
+# 상황 인코더와 FiLM (care_model.py)
+care:
+  film_layers: [2, 15, 18, 21]   # YOLOv8s: 2 = 백본 초반 C2f (stride 4), 15·18·21 = 넥 출력 P3·P4·P5 (검출 헤드 입력)
+  clim_dim: 12                   # 값 6 + 결측 표시 6
+  clim_hidden: 32
+  clim_z: 32
+  loc_z: 16
+  emb_dims: {region: 8, facility: 4, part: 4}
+  modal_dropout: 0.3             # 학습 중 보조 모달마다 따로 이 확률로 결측 처리 (ModDrop)
+
+# 실험. mode: gray3 | phys3, context: [] | [clim] | [loc] | [clim, loc], site_balance_power: 0 이면 끔
+experiments:
+  base_gray3: {mode: gray3, context: [], site_balance_power: 0.0, desc: "데이터 추가만 (구조는 example_03 검출기와 같음)"}
+  G:          {mode: phys3, context: [], site_balance_power: 0.5, desc: "물리 입력 채널 + 현장 균형 표집 (GPR 단독)"}
+  GCL:        {mode: phys3, context: [clim, loc], site_balance_power: 0.5, desc: "CARE-YOLO 주안: G + 기후·위치 FiLM"}
+  GC:         {mode: phys3, context: [clim], site_balance_power: 0.5, desc: "G + 기후 FiLM (선택 실험)"}
+  GL:         {mode: phys3, context: [loc], site_balance_power: 0.5, desc: "G + 위치 FiLM (선택 실험)"}
+experiments_main: GCL
+
+# S2 검출기 (COCO 사전학습 yolov8s.pt 에서 시작, 동결 없이 미세조정). example_03 과 같은 인자
+detector:
+  weights: "yolov8s.pt"     # COCO 사전학습. 파일 이름만 쓰면 Ultralytics 가 자동으로 내려받는다
+  device: 0                 # CUDA_VISIBLE_DEVICES 안에서의 번호
+  oom_fallback_batch: 16    # batch 32 가 메모리 부족이면 16으로
+  train_args:
+    imgsz: 512
+    epochs: 60
+    patience: 0               # 조기 종료 끔 (60 epoch 전부, best.pt 는 val mAP50-95 최고)
+    batch: 32
+    optimizer: SGD
+    lr0: 0.01
+    lrf: 0.01
+    momentum: 0.937
+    weight_decay: 0.0005
+    cos_lr: true
+    warmup_epochs: 3
+    mosaic: 0.0
+    close_mosaic: 0
+    mixup: 0.0
+    copy_paste: 0.0
+    fliplr: 0.5
+    flipud: 0.0
+    degrees: 0.0
+    shear: 0.0
+    perspective: 0.0
+    translate: 0.05
+    scale: 0.15
+    hsv_h: 0.0                # phys3 채널 값이 바뀌지 않도록 색 증강은 끈다
+    hsv_s: 0.0
+    hsv_v: 0.0
+    seed: 2026
+    deterministic: true
+    workers: 8
+    amp: true
+    exist_ok: false
+    val: true
+    plots: true
+
+# S3 예측
+predict:
+  batch: 64
+  num_workers: 8
+  nms: {conf_thres: 0.001, iou_thres: 0.5, max_det: 100}
+  context_tests: [normal, missC, missL, missCL, permC, permL]   # 상황을 쓰는 실험만. 재학습 없이 평가 때 바꿈
+  permutation_seed: 2026
+
+# S4 평가
+evaluate:
+  defect_classes: [1, 2]          # rebar(c), crack
+  threshold_grid: {start: 0.01, stop: 0.99, step: 0.01}
+  r0_score_thr: 0.5
+  kpi1_target: 0.88               # 진단 F1 (주안, test)
+  kpi2_target: 0.85               # R0 정확도 (주안, test)
+  box_f1: {score_thr: 0.5, iou_thr: 0.5}
+  crack_excluded_facilities: [교량]
+  bootstrap: {n_boot: 1000, seed: 2026, group: struct}   # 재표집 단위 = 분할 단위인 구조물 (test 8개)
+  paired_diffs: [[GCL, G], [G, base_gray3], [GCL, base_gray3], [GC, G], [GL, G]]
+
+# 스모크 테스트
+smoke:
+  per_facility_split: 16           # 시설별·분할별 filename 정렬 순 처음 16장
+  bad_per_cell_if_none: 4
+  overrides:
+    paths.work_dir: "../work/smoke"
+    data.expected_split_counts: {train: 64, val: 64, test: 64}
+    phys.fit_max_images_per_equipment: 64
+    detector.train_args.epochs: 2
+    detector.train_args.batch: 8
+    detector.train_args.workers: 2
+    predict.batch: 16
+    predict.num_workers: 2
+    evaluate.bootstrap: {n_boot: 50, seed: 2026, group: struct}
